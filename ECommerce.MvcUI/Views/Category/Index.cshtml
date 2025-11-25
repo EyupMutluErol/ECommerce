@@ -1,0 +1,76 @@
+﻿@using ECommerce.MvcUI.Models.CategoryModel
+@model CategoryListModel
+@{
+    ViewData["Title"] = "Categories";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+<div class="col-md-12 mb-4 mt-3 ml-1">
+
+    <h2 class="mb-4 ml-1">
+        Categories
+        <a href="/Category/Create" class="btn btn-primary">Add</a>
+    </h2>
+    @if (Model.Categories.Count > 0)
+    {
+        <table id="tb11" class="table table-bordered table-striped mt-3">
+            <thead>
+                 <tr>
+                     <th style="width:30px">
+                         Make it passive
+                     </th>
+                     <th>
+                         Id
+                     </th>
+                     <th>
+                         Name
+                     </th>
+                 </tr>
+            
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Categories)
+                {
+                    <tr>
+                        <td>
+                            <a href="/Category/Delete/@item.Id" class="text-danger" data-toggle ="tooltip" data-placement="top" title="Delete" onclick="return confirm('Are you want to passive it')">Passive</a>
+                        </td>
+                        <td>
+                            <a asp-controller="Category" asp-action="Update" asp-route-id="@item.Id">@item.Id</a>
+                        </td>
+                        <td>
+                            <a asp-controller="Category" asp-action="Update" asp-route-id="@item.Name">@item.Name</a>
+                        </td>
+                    </tr>
+                    
+                }
+
+            </tbody>
+
+
+        </table>   
+
+    }
+    else
+    {
+        <div class="alert alert-warning">
+            <h4>No Product</h4>
+        </div>
+    }
+
+</div>
+
+
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
+<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+
+<script>
+
+    $('tbl2').dataTable({});
+
+</script>

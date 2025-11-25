@@ -1,0 +1,94 @@
+﻿@model RegisterModel;
+@{
+
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+
+}
+
+@section Scrpts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded',function(){
+
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+
+        if(imageInput){
+            imageInput.addEventListener('change',function(e){
+
+                const file = e.target.files[0];
+                if(file){
+                   
+                    const reader =new FileReader();
+                    reader.onload =function(e){
+                        imagePreview.src=e.target.result;
+                        imagePreview.style.display='block';
+                    }
+                    reader.readAsDataURL(file);
+                }
+
+            });
+        }
+
+    });
+
+</script>
+
+
+}
+<div class="register">
+    <div class="container">
+        <h2>Register</h2>
+        @if(ViewBag.Error != null)
+        {
+            <div class="text-danger">@ViewBag.ErrorMessage</div>
+
+        }
+
+        <div class="login-form-grids">
+            <h5>Profile information</h5>
+
+            <form asp-controller="Account" asp-action="Register" method="post" enctype="multipart/form-data">
+
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <input asp-for="FullName" value="@Model.FullName" class="form-control" placeholder="Full Name..." />
+                <span asp-validation-for="FullName"></span>
+
+                <input asp-for="PhoneNumber" value="@Model.PhoneNumber" class="form-control" placeholder="PhoneNumber.." />
+                <span asp-validation-for="PhoneNumber"></span>
+
+                <input asp-for="UserName" value="@Model.UserName" class="form-control" placeholder="UserName..." />
+                <span asp-validation-for="UserName"></span>
+
+                <label for="imageInput"class="form-label">Profil Image</label>
+                <input asp-for="Image" id="imageInput" type="file" class="form-control" accept="image/*"   />
+                <span asp-validation-for="Image"></span>
+
+
+                <h6>Login Information</h6>
+
+                <input asp-for="Email" value="@Model.Email" class="form-control" placeholder="Email..." />
+                <span asp-validation-for="Email"></span>
+
+                <input asp-for="Password" value="@Model.Password" class="form-control" placeholder="Password..." />
+                <span asp-validation-for="Password"></span>
+
+                <input asp-for="RePassword" value="@Model.RePassword" class="form-control" placeholder="RePassword..." />
+                <span asp-validation-for="RePassword"></span>
+                <input  type="submit" value="Register"/>
+
+            </form>
+
+        </div>
+        <div class="register-home">
+            <a href="/HomePage/Index">Home</a>
+        </div>
+
+    </div>
+
+</div>

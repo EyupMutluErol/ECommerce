@@ -1,0 +1,76 @@
+﻿@{
+    ViewData["Title"] = "Ürün - Stok Grafiği";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+
+    <!-- Google Charts -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: '@Url.Action("VisualizeColumnChart", "Graphic")',
+                success: function (result) {
+                    google.charts.load('current', { packages: ['corechart'] });
+                    google.charts.setOnLoadCallback(function () {
+                        drawChart(result);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error("Grafik verisi alınamadı:", error);
+                }
+            });
+        });
+
+        function drawChart(result) {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Ürün');
+            data.addColumn('number', 'Stok');
+
+            var dataArray = [];
+            $.each(result, function (i, obj) {
+                dataArray.push([obj.product, obj.stock]);
+            });
+            data.addRows(dataArray);
+
+            var options = {
+                title: 'Ürün Bazlı Stok Miktarları',
+                width: 1000,
+                height: 600,
+                legend: { position: 'none' },
+                bar: { groupWidth: '50%' },
+                colors: ['#4285F4'],
+                backgroundColor: '#fafafa',
+                hAxis: {
+                    title: 'Ürünler',
+                    slantedText: true,
+                    slantedTextAngle: 45
+                },
+                vAxis: {
+                    title: 'Stok Adedi',
+                    minValue: 0
+                }
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('columnchart_div'));
+            chart.draw(data, options);
+        }
+    </script>
+</head>
+
+<body>
+    <div style="margin: 50px auto; text-align: center;">
+        <h2>📦 Ürün - Stok Grafiği</h2>
+        <div id="columnchart_div" style="width:1000px; height:600px; margin:auto;"></div>
+    </div>
+</body>
+</html>

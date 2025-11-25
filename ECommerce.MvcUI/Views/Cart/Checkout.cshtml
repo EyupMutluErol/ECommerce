@@ -1,0 +1,90 @@
+﻿@using ECommerce.MvcUI.Models.OrderModel
+@model OrderModel
+@{
+    ViewData["Title"] = "Checkout";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<h1 style="margin-top:50px;margin-left:115px">Checkout</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-8 ml-3">
+        <h4 style="margin-bottom:25px;margin-left:115px">Order Details</h4>
+        <form asp-action="CheckOut" method="post" style="margin-left:115px;margin-bottom:25px">
+            <div class="row">
+                <div class="col-md-6" style="margin-bottom:10px">
+                    <label>First Name</label>
+                    <input asp-for="FirstName" class="form-control" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label>Last Name</label>
+                    <input asp-for="LastName" class="form-control" />
+                </div>
+            </div>
+
+            <div style="margin-bottom:10px">
+                <label>Address</label>
+                <textarea asp-for="Address" class="form-control"></textarea>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label>City</label>
+                    <input asp-for="City" class="form-control" />
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label>Phone</label>
+                    <input asp-for="Phone" class="form-control" />
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label>Email</label>
+                    <input asp-for="Email" class="form-control" />
+                </div>
+            </div>
+
+            <hr class="mb-4" />
+
+            <h4 style="margin-top:25px">Payment</h4>
+            <hr class="mb-4" />
+
+            @if (ViewBag.CheckoutFormHtml != null)
+            {
+                <div id="iyzico-checkout-form">
+                    @Html.Raw(ViewBag.CheckoutFormHtml)
+                    
+            </div>
+             }
+            else
+            {
+                <p style="color:red">Ödeme formu yüklenemedi. Lütfen tekrar deneyin.</p>
+            }
+
+            <hr class="mb-4" />
+            <button type="submit" class="btn btn-success btn-lg btn-block">
+                Complete Order
+            </button>
+        </form>
+    </div>
+
+    <div class="col-md-3">
+        <h4 style="margin-bottom:25px">
+            <span>Your Cart</span>
+        </h4>
+        <ul class="list-group mb-3">
+            @foreach (var x in Model.CartModel.CartItems)
+            {
+                <li class="list-group-item d-flex justify-content-between">
+                    <div>
+                        <h6 class="my-0">@x.Name x(@x.Quantity)</h6>
+                    </div>
+                    <span class="text-muted">@x.DiscountedPrice ₺</span>
+                </li>
+            }
+            <li class="list-group-item d-flex justify-content-between">
+                <span>Total (₺)</span>
+                <strong>@Model.CartModel.TotalPrice() ₺</strong>
+            </li>
+        </ul>
+    </div>
+</div>

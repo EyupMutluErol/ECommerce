@@ -1,0 +1,12 @@
+﻿@using ECommerce.MvcUI.Models.ProductModel
+
+@model ProductListModel
+@{
+    ViewData["Title"] = "Home";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+
+<partial name="_Slider" />
+
+ @await Component.InvokeAsync("HomeMonth")
